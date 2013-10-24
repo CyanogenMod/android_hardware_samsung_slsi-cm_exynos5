@@ -38,10 +38,14 @@ ifeq ($(BOARD_USES_DT), true)
 endif
 
 LOCAL_C_INCLUDES := \
+	$(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr/include \
 	$(LOCAL_PATH)/../include \
 	$(TOP)/hardware/samsung_slsi-cm/exynos/include \
 	$(TOP)/hardware/samsung_slsi-cm/exynos/libexynosutils \
 	$(TOP)/hardware/samsung_slsi-cm/exynos/libmpp
+
+LOCAL_ADDITIONAL_DEPENDENCIES := \
+	$(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr
 
 LOCAL_SRC_FILES := \
 	libgscaler_obj.cpp \

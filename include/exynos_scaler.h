@@ -34,7 +34,7 @@
 #define _EXYNOS_SCALER_H_
 
 
-#include <videodev2.h>
+#include <linux/videodev2.h>
 #include <stdbool.h>
 
 #include "exynos_format.h"
