@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-# codecs
+# codecs (video)
 PRODUCT_PACKAGES := \
 	libOMX.Exynos.MPEG4.Decoder \
 	libOMX.Exynos.AVC.Decoder \
@@ -22,6 +22,11 @@ PRODUCT_PACKAGES := \
 	libOMX.Exynos.HEVC.Decoder \
 	libOMX.Exynos.MPEG4.Encoder \
 	libOMX.Exynos.AVC.Encoder
+
+# codecs (audio)
+PRODUCT_PACKAGES += \
+	libOMX.Exynos.MP3.Decoder \
+	libOMX.Exynos.WMA.Encoder
 
 # stagefright and device specific modules
 PRODUCT_PACKAGES += \
