@@ -30,6 +30,11 @@ PRODUCT_PACKAGES += \
 	libOMX.Exynos.MP3.Decoder \
 	libOMX.Exynos.WMA.Encoder
 
+ifeq ($(BOARD_USE_SEIREN_AUDIO), true)
+PRODUCT_PACKAGES += \
+	libseirenhw
+endif
+
 # stagefright and device specific modules
 PRODUCT_PACKAGES += \
 	libstagefrighthw \
