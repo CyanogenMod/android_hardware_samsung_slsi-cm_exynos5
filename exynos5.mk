@@ -25,6 +25,8 @@ PRODUCT_PACKAGES := \
 
 # codecs (audio)
 PRODUCT_PACKAGES += \
+	libOMX.Exynos.AAC.Decoder \
+	libOMX.Exynos.FLAC.Decoder \
 	libOMX.Exynos.MP3.Decoder \
 	libOMX.Exynos.WMA.Encoder
 
