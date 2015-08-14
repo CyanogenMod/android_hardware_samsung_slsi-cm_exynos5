@@ -26,20 +26,20 @@ LOCAL_CFLAGS += -DHWC_SERVICES
 
 LOCAL_C_INCLUDES := \
 	$(LOCAL_PATH)/../include \
-	$(TOP)/hardware/samsung_slsi/exynos/include \
-	$(TOP)/hardware/samsung_slsi/exynos/libhwcutils \
-	$(TOP)/hardware/samsung_slsi/exynos/libdisplay \
-	$(TOP)/hardware/samsung_slsi/exynos/libexynosutils \
-	$(TOP)/hardware/samsung_slsi/$(TARGET_SOC)/include \
-	$(TOP)/hardware/samsung_slsi/$(TARGET_SOC)/libhwcmodule
+	$(TOP)/hardware/samsung_slsi-cm/exynos/include \
+	$(TOP)/hardware/samsung_slsi-cm/exynos/libhwcutils \
+	$(TOP)/hardware/samsung_slsi-cm/exynos/libdisplay \
+	$(TOP)/hardware/samsung_slsi-cm/exynos/libexynosutils \
+	$(TOP)/hardware/samsung_slsi-cm/$(TARGET_SOC)/include \
+	$(TOP)/hardware/samsung_slsi-cm/$(TARGET_SOC)/libhwcmodule
 
 ifeq ($(BOARD_HDMI_INCAPABLE), true)
-LOCAL_C_INCLUDES += $(TOP)/hardware/samsung_slsi/exynos/libhdmi_dummy
+LOCAL_C_INCLUDES += $(TOP)/hardware/samsung_slsi-cm/exynos/libhdmi_dummy
 else
 ifeq ($(BOARD_USES_NEW_HDMI), true)
-LOCAL_C_INCLUDES += $(TOP)/hardware/samsung_slsi/exynos/libhdmi
+LOCAL_C_INCLUDES += $(TOP)/hardware/samsung_slsi-cm/exynos/libhdmi
 else
-LOCAL_C_INCLUDES += $(TOP)/hardware/samsung_slsi/exynos/libhdmi_legacy
+LOCAL_C_INCLUDES += $(TOP)/hardware/samsung_slsi-cm/exynos/libhdmi_legacy
 endif
 endif
 
@@ -48,13 +48,13 @@ LOCAL_C_INCLUDES += \
     $(LOCAL_PATH)/../libhwc_tvprimary
 else
 LOCAL_C_INCLUDES += \
-	$(TOP)/hardware/samsung_slsi/exynos/libhwc
+	$(TOP)/hardware/samsung_slsi-cm/exynos/libhwc
 endif
 
 ifeq ($(BOARD_USES_VIRTUAL_DISPLAY), true)
 	LOCAL_CFLAGS += -DUSES_VIRTUAL_DISPLAY
 	LOCAL_SHARED_LIBRARIES += libvirtualdisplay
-	LOCAL_C_INCLUDES += $(TOP)/hardware/samsung_slsi/exynos/libvirtualdisplay
+	LOCAL_C_INCLUDES += $(TOP)/hardware/samsung_slsi-cm/exynos/libvirtualdisplay
 endif
 
 LOCAL_SRC_FILES := ExynosHWCService.cpp IExynosHWC.cpp
