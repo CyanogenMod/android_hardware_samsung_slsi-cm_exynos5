@@ -29,8 +29,6 @@
 #include <sys/time.h>
 #include <sys/resource.h>
 
-#include <linux/s3c-fb.h>
-
 #include <EGL/egl.h>
 
 #define HWC_REMOVE_DEPRECATED_VERSIONS 1
