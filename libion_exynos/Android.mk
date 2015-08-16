@@ -17,7 +17,7 @@ include $(CLEAR_VARS)
 
 # HAL module implemenation stored in
 # hw/<COPYPIX_HARDWARE_MODULE_ID>.<ro.product.board>.so
-LOCAL_MODULE_PATH := $(TARGET_OUT_SHARED_LIBRARIES)
+LOCAL_MODULE_RELATIVE_PATH := $(TARGET_OUT_SHARED_LIBRARIES)
 
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/../include
 
@@ -27,7 +27,7 @@ LOCAL_SRC_FILES:= \
 LOCAL_CFLAGS += -DGAIA_FW_BETA
 
 LOCAL_MODULE := libion_exynos
-
+LOCAL_MULTILIB := both
 LOCAL_MODULE_TAGS := optional
 
 include $(BUILD_SHARED_LIBRARY)
