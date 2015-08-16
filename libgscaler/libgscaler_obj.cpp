@@ -935,7 +935,7 @@ bool CGscaler::m_gsc_set_addr(int fd, GscInfo *info)
 
     for (i = 0; i < info->format.fmt.pix_mp.num_planes; i++) {
         if (info->buf.buffer.memory == V4L2_MEMORY_DMABUF)
-            info->buf.buffer.m.planes[i].m.fd = (int)info->buf.addr[i];
+            info->buf.buffer.m.planes[i].m.fd = (intptr_t)info->buf.addr[i];
         else
             info->buf.buffer.m.planes[i].m.userptr =
                 (unsigned long)info->buf.addr[i];
@@ -1374,27 +1374,27 @@ int CGscaler::m_gsc_m2m_run(void *handle,
     void *addr[3] = {NULL, NULL, NULL};
     int ret = 0;
 
-    addr[0] = (void *)src_img->yaddr;
-    addr[1] = (void *)src_img->uaddr;
-    addr[2] = (void *)src_img->vaddr;
+    addr[0] = (void *)(intptr_t)src_img->yaddr;
+    addr[1] = (void *)(intptr_t)src_img->uaddr;
+    addr[2] = (void *)(intptr_t)src_img->vaddr;
     ret = exynos_gsc_set_src_addr(handle, addr, src_img->mem_type,
             src_img->acquireFenceFd);
     if (ret < 0) {
         ALOGE("%s::fail: exynos_gsc_set_src_addr[%x %x %x]", __func__,
-            (unsigned int)addr[0], (unsigned int)addr[1],
-            (unsigned int)addr[2]);
+            (uintptr_t)addr[0], (uintptr_t)addr[1],
+            (uintptr_t)addr[2]);
         return -1;
     }
 
-    addr[0] = (void *)dst_img->yaddr;
-    addr[1] = (void *)dst_img->uaddr;
-    addr[2] = (void *)dst_img->vaddr;
+    addr[0] = (void *)(intptr_t)dst_img->yaddr;
+    addr[1] = (void *)(intptr_t)dst_img->uaddr;
+    addr[2] = (void *)(intptr_t)dst_img->vaddr;
     ret = exynos_gsc_set_dst_addr(handle, addr, dst_img->mem_type,
             dst_img->acquireFenceFd);
     if (ret < 0) {
         ALOGE("%s::fail: exynos_gsc_set_dst_addr[%x %x %x]", __func__,
-            (unsigned int)addr[0], (unsigned int)addr[1],
-            (unsigned int)addr[2]);
+            (uintptr_t)addr[0], (uintptr_t)addr[1],
+            (uintptr_t)addr[2]);
         return -1;
     }
 
@@ -1477,9 +1477,9 @@ int CGscaler::m_gsc_out_run(void *handle, exynos_mpp_img *src_img)
     buf.m.planes = planes;
     buf.reserved = src_img->acquireFenceFd;
 
-    gsc->src_info.buf.addr[0] = (void*)src_img->yaddr;
-    gsc->src_info.buf.addr[1] = (void*)src_img->uaddr;
-    gsc->src_info.buf.addr[2] = (void*)src_img->vaddr;
+    gsc->src_info.buf.addr[0] = (void*)(intptr_t)src_img->yaddr;
+    gsc->src_info.buf.addr[1] = (void*)(intptr_t)src_img->uaddr;
+    gsc->src_info.buf.addr[2] = (void*)(intptr_t)src_img->vaddr;
 
     if (CGscaler::tmp_get_plane_size(src_color_space, plane_size,
         gsc->src_img.fw,  gsc->src_img.fh, src_planes) != true) {
@@ -1488,7 +1488,7 @@ int CGscaler::m_gsc_out_run(void *handle, exynos_mpp_img *src_img)
     }
 
     for (i = 0; i < buf.length; i++) {
-        buf.m.planes[i].m.fd = (int)gsc->src_info.buf.addr[i];
+        buf.m.planes[i].m.fd = (intptr_t)gsc->src_info.buf.addr[i];
         buf.m.planes[i].length    = plane_size[i];
         buf.m.planes[i].bytesused = plane_size[i];
     }
