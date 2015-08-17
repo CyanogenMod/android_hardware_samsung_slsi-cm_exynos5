@@ -357,14 +357,14 @@ int exynos_sc_run_exclusive(
 
     void *addr[SC_NUM_OF_PLANES];
 
-    addr[0] = (void *)src_img->yaddr;
-    addr[1] = (void *)src_img->uaddr;
-    addr[2] = (void *)src_img->vaddr;
+    addr[0] = (void *)(uintptr_t)src_img->yaddr;
+    addr[1] = (void *)(uintptr_t)src_img->uaddr;
+    addr[2] = (void *)(uintptr_t)src_img->vaddr;
     sc->SetAddr(CScaler::SC_SRC, addr, src_img->mem_type, src_img->acquireFenceFd);
 
-    addr[0] = (void *)dst_img->yaddr;
-    addr[1] = (void *)dst_img->uaddr;
-    addr[2] = (void *)dst_img->vaddr;
+    addr[0] = (void *)(uintptr_t)dst_img->yaddr;
+    addr[1] = (void *)(uintptr_t)dst_img->uaddr;
+    addr[2] = (void *)(uintptr_t)dst_img->vaddr;
     sc->SetAddr(CScaler::SC_DST, addr, dst_img->mem_type, dst_img->acquireFenceFd);
 
     if (sc->SetCtrl())
