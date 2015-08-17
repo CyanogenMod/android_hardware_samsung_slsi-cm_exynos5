@@ -19,6 +19,8 @@ LOCAL_C_INCLUDES := \
 
 LOCAL_MODULE := libswconverter
 
+LOCAL_MULTILIB := 32
+
 LOCAL_PRELINK_MODULE := false
 
 LOCAL_CFLAGS :=
