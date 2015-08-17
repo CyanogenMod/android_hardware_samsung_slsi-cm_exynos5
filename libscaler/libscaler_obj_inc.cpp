@@ -401,9 +401,9 @@ int CScaler::QBuf()
             if (V4L2_TYPE_IS_OUTPUT(buffer.type))
                 planes[i].bytesused = planes[i].length;
             if (buffer.memory == V4L2_MEMORY_DMABUF)
-                planes[i].m.fd = reinterpret_cast<int>(m_Frame.edge[edge].addr[i]);
+                planes[i].m.fd = reinterpret_cast<intptr_t>(m_Frame.edge[edge].addr[i]);
             else
-                planes[i].m.userptr = reinterpret_cast<unsigned long>(m_Frame.edge[edge].addr[i]);
+                planes[i].m.userptr = reinterpret_cast<uintptr_t>(m_Frame.edge[edge].addr[i]);
         }
 
 
@@ -451,9 +451,9 @@ int CScaler::QBuf(int pfdReleaseFence[SC_NUM_EDGES])
             if (V4L2_TYPE_IS_OUTPUT(buffer.type))
                 planes[i].bytesused = planes[i].length;
             if (buffer.memory == V4L2_MEMORY_DMABUF)
-                planes[i].m.fd = reinterpret_cast<int>(m_Frame.edge[edge].addr[i]);
+                planes[i].m.fd = reinterpret_cast<intptr_t>(m_Frame.edge[edge].addr[i]);
             else
-                planes[i].m.userptr = reinterpret_cast<unsigned long>(m_Frame.edge[edge].addr[i]);
+                planes[i].m.userptr = reinterpret_cast<uintptr_t>(m_Frame.edge[edge].addr[i]);
         }
 
 
