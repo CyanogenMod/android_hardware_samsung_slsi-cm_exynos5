@@ -1,6 +1,4 @@
-#
-#
-# Copyright (C) 2009 The Android Open Source Project
+# Copyright (C) 2013 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,30 +11,23 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
 
-ifeq ($(TARGET_BOARD_PLATFORM),exynos5)
-ifeq ($(TARGET_SLSI_VARIANT),cm)
+LOCAL_PATH := $(call my-dir)
 
-exynos5_dirs := \
-	libion_exynos \
-	libgscaler \
-	libswconverter \
-	libhwcService \
-	libmemtrack
+# HAL module implemenation stored in
+# hw/<POWERS_HARDWARE_MODULE_ID>.<ro.hardware>.so
+include $(CLEAR_VARS)
 
+LOCAL_SRC_FILES := memtrack_exynos5.c ion.c
 
-ifeq ($(BOARD_TV_PRIMARY), true)
-exynos5_dirs += \
-       libhwc_tvprimary
+ifneq ($(TARGET_SOC),exynos5410)
+LOCAL_SRC_FILES += mali.c
 endif
 
-ifeq ($(BOARD_USES_SCALER), true)
-exynos5_dirs += \
-	libscaler
-endif
+LOCAL_C_INCLUDES += hardware/libhardware/include
+LOCAL_MODULE_RELATIVE_PATH := hw
+LOCAL_SHARED_LIBRARIES := liblog
+LOCAL_MODULE := memtrack.exynos5
+LOCAL_MODULE_TAGS := optional
 
-include $(call all-named-subdir-makefiles,$(exynos5_dirs))
-
-endif
-endif
+include $(BUILD_SHARED_LIBRARY)
