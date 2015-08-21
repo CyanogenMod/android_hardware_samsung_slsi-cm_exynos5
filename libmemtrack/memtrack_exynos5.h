@@ -17,9 +17,18 @@
 #ifndef _MEMTRACK_EXYNOS5_H_
 #define _MEMTRACK_EXYNOS5_H_
 
+#ifdef TRACK_MALI_MEMORY
 int mali_memtrack_get_memory(pid_t pid, int type,
                              struct memtrack_record *records,
                              size_t *num_records);
+#else
+static int inline mali_memtrack_get_memory(pid_t pid, int type,
+                                           struct memtrack_record *records,
+                                           size_t *num_records)
+{
+    return -ENOSYS;
+}
+#endif
 
 int ion_memtrack_get_memory(pid_t pid,
                             int type,
