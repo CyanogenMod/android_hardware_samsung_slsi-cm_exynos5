@@ -47,3 +47,7 @@ PRODUCT_PACKAGES += \
 # MobiCore
 PRODUCT_PACKAGES += \
 	mcDriverDaemon
+
+# Memory Tracker HAL
+PRODUCT_PACKAGES += \
+	memtrack.exynos5
