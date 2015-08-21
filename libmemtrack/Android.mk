@@ -18,6 +18,10 @@ LOCAL_PATH := $(call my-dir)
 # hw/<POWERS_HARDWARE_MODULE_ID>.<ro.hardware>.so
 include $(CLEAR_VARS)
 
+ifneq ($(TARGET_SOC), exynos5410)
+LOCAL_CFLAGS += -DTRACK_MALI_MEMORY
+endif
+
 LOCAL_MODULE_RELATIVE_PATH := hw
 LOCAL_C_INCLUDES += hardware/libhardware/include
 LOCAL_SHARED_LIBRARIES := liblog
