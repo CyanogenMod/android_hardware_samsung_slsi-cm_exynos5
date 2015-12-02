@@ -28,6 +28,7 @@
  *   2012.02.01 : Create
  */
 
+#include <string.h>
 #include "stdio.h"
 #include "stdlib.h"
 #include "swconverter.h"
