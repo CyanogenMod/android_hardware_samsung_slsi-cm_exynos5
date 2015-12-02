@@ -5,7 +5,10 @@ include $(CLEAR_VARS)
 LOCAL_MODULE_TAGS := optional
 
 LOCAL_SRC_FILES := \
-	swconvertor.c \
+	swconvertor.c
+
+# Only use NEON optimized assembly for arm targets
+LOCAL_SRC_FILES_arm += \
 	csc_tiled_to_linear_y_neon.s \
 	csc_tiled_to_linear_uv_neon.s \
 	csc_tiled_to_linear_uv_deinterleave_neon.s \
@@ -18,8 +21,6 @@ LOCAL_C_INCLUDES := \
 	$(LOCAL_PATH)/../include
 
 LOCAL_MODULE := libswconverter
-
-LOCAL_MULTILIB := 32
 
 LOCAL_CFLAGS :=
 
