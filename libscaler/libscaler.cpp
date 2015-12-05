@@ -190,7 +190,7 @@ int exynos_sc_set_src_addr(
         void *handle,
         void *addr[SC_NUM_OF_PLANES],
         int mem_type,
-        int acquireFenceFd)
+        int acquireFenceFd __unused)
 {
     CScaler *sc = GetScaler(handle);
     if (!sc)
@@ -206,7 +206,7 @@ int exynos_sc_set_dst_addr(
         void *handle,
         void *addr[SC_NUM_OF_PLANES],
         int mem_type,
-        int acquireFenceFd)
+        int acquireFenceFd __unused)
 {
     CScaler *sc = GetScaler(handle);
     if (!sc)
