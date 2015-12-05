@@ -705,10 +705,13 @@ done:
 }
 
 bool CGscaler::m_gsc_check_src_size(
-    unsigned int *w,      unsigned int *h,
-    unsigned int *crop_x, unsigned int *crop_y,
-    unsigned int *crop_w, unsigned int *crop_h,
-    int v4l2_colorformat)
+    unsigned int *w,
+    unsigned int *h,
+    unsigned int *crop_x __unused,
+    unsigned int *crop_y __unused,
+    unsigned int *crop_w,
+    unsigned int *crop_h,
+    int v4l2_colorformat __unused)
 {
     if (*w < GSC_MIN_SRC_W_SIZE || *h < GSC_MIN_SRC_H_SIZE) {
         ALOGE("%s::too small size (w : %d < %d) (h : %d < %d)",
@@ -726,11 +729,14 @@ bool CGscaler::m_gsc_check_src_size(
 }
 
 bool CGscaler::m_gsc_check_dst_size(
-    unsigned int *w,      unsigned int *h,
-    unsigned int *crop_x, unsigned int *crop_y,
-    unsigned int *crop_w, unsigned int *crop_h,
-    int v4l2_colorformat,
-    int rotation)
+    unsigned int *w,
+    unsigned int *h,
+    unsigned int *crop_x __unused,
+    unsigned int *crop_y __unused,
+    unsigned int *crop_w,
+    unsigned int *crop_h,
+    int v4l2_colorformat __unused,
+    int rotation __unused)
 {
     if (*w < GSC_MIN_DST_W_SIZE || *h < GSC_MIN_DST_H_SIZE) {
         ALOGE("%s::too small size (w : %d < %d) (h : %d < %d)",
