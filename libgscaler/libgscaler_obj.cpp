@@ -29,6 +29,37 @@
 #include "libgscaler_obj.h"
 #include "content_protect.h"
 
+char* gsc_open_node(int dev_num) {
+    int fd;
+    char* devname = new char[32];
+
+    switch (dev_num) {
+    case 0:
+        snprintf(devname, sizeof(devname), PFX_GSC_VIDEODEV_ENTITY0);
+        fd = exynos_v4l2_open_devname(devname, O_RDWR);
+        if (fd < 0) {
+            snprintf(devname, sizeof(devname), PFX_GSC_VIDEODEV_ENTITY0_SHORT);
+        }
+        break;
+    case 1:
+        snprintf(devname, sizeof(devname), PFX_GSC_VIDEODEV_ENTITY1);
+        fd = exynos_v4l2_open_devname(devname, O_RDWR);
+        if (fd < 0) {
+            snprintf(devname, sizeof(devname), PFX_GSC_VIDEODEV_ENTITY1_SHORT);
+        }
+        break;
+    case 2:
+        snprintf(devname, sizeof(devname), PFX_GSC_VIDEODEV_ENTITY2);
+        fd = exynos_v4l2_open_devname(devname, O_RDWR);
+        if (fd < 0) {
+            snprintf(devname, sizeof(devname), PFX_GSC_VIDEODEV_ENTITY2_SHORT);
+        }
+        break;
+    }
+
+    return devname;
+}
+
 int CGscaler::m_gsc_output_create(void *handle, int dev_num, int out_mode)
 {
     Exynos_gsc_In();
@@ -94,17 +125,7 @@ int CGscaler::m_gsc_output_create(void *handle, int dev_num, int out_mode)
 
     /* get GSC video dev & sub dev entity by name*/
 #if defined(USES_DT)
-    switch (dev_num) {
-    case 0:
-        snprintf(devname, sizeof(devname), PFX_GSC_VIDEODEV_ENTITY0);
-        break;
-    case 1:
-        snprintf(devname, sizeof(devname), PFX_GSC_VIDEODEV_ENTITY1);
-        break;
-    case 2:
-        snprintf(devname, sizeof(devname), PFX_GSC_VIDEODEV_ENTITY2);
-        break;
-    }
+    snprintf(devname, sizeof(devname), gsc_open_node(dev_num));
 #else
     snprintf(devname, sizeof(devname), PFX_GSC_VIDEODEV_ENTITY, dev_num);
 #endif
@@ -170,17 +191,7 @@ int CGscaler::m_gsc_output_create(void *handle, int dev_num, int out_mode)
 
     /* gsc video-dev open */
 #if defined(USES_DT)
-    switch (dev_num) {
-    case 0:
-        snprintf(devname, sizeof(devname), PFX_GSC_VIDEODEV_ENTITY0);
-        break;
-    case 1:
-        snprintf(devname, sizeof(devname), PFX_GSC_VIDEODEV_ENTITY1);
-        break;
-    case 2:
-        snprintf(devname, sizeof(devname), PFX_GSC_VIDEODEV_ENTITY2);
-        break;
-    }
+    snprintf(devname, sizeof(devname), gsc_open_node(dev_num));
 #else
     snprintf(devname, sizeof(devname), PFX_GSC_VIDEODEV_ENTITY, dev_num);
 #endif
