@@ -65,9 +65,15 @@ extern "C" {
 #define PFX_MXR_ENTITY              "s5p-mixer%d"
 #define PFX_FIMD_ENTITY             "s3c-fb-window%d"
 #if defined(USES_DT)
+#if defined(USES_DT_SHORTNAME)
+#define PFX_GSC_VIDEODEV_ENTITY0  "13c00000.gsc"
+#define PFX_GSC_VIDEODEV_ENTITY1  "13c10000.gsc"
+#define PFX_GSC_VIDEODEV_ENTITY2  "13c20000.gsc"
+#else
 #define PFX_GSC_VIDEODEV_ENTITY0  "13c00000.gsc.output"
 #define PFX_GSC_VIDEODEV_ENTITY1  "13c10000.gsc.output"
 #define PFX_GSC_VIDEODEV_ENTITY2  "13c20000.gsc.output"
+#endif
 #else
 #define PFX_GSC_VIDEODEV_ENTITY   "exynos-gsc.%d.output"
 #endif

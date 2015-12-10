@@ -37,6 +37,10 @@ ifeq ($(BOARD_USES_DT), true)
 	LOCAL_CFLAGS += -DUSES_DT
 endif
 
+ifeq ($(BOARD_USES_DT_SHORTNAME), true)
+	LOCAL_CFLAGS += -DUSES_DT_SHORTNAME
+endif
+
 LOCAL_C_INCLUDES := \
 	$(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr/include \
 	$(LOCAL_PATH)/../include \
