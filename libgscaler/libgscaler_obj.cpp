@@ -121,7 +121,7 @@ int CGscaler::m_gsc_output_create(void *handle, int dev_num, int out_mode)
 
     /* get GSC video dev & sub dev entity by name*/
 #if defined(USES_DT)
-    snprintf(devname, sizeof(devname), gsc_open_node(dev_num));
+    snprintf(devname, sizeof(devname), "%s", gsc_open_node(dev_num));
 #else
     snprintf(devname, sizeof(devname), PFX_GSC_VIDEODEV_ENTITY, dev_num);
 #endif
@@ -187,7 +187,7 @@ int CGscaler::m_gsc_output_create(void *handle, int dev_num, int out_mode)
 
     /* gsc video-dev open */
 #if defined(USES_DT)
-    snprintf(devname, sizeof(devname), gsc_open_node(dev_num));
+    snprintf(devname, sizeof(devname), "%s", gsc_open_node(dev_num));
 #else
     snprintf(devname, sizeof(devname), PFX_GSC_VIDEODEV_ENTITY, dev_num);
 #endif
