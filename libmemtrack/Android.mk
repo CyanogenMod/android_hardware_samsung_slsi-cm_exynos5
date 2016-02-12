@@ -22,7 +22,7 @@ LOCAL_MODULE_RELATIVE_PATH := hw
 LOCAL_C_INCLUDES += hardware/libhardware/include
 LOCAL_SHARED_LIBRARIES := liblog
 LOCAL_SRC_FILES := memtrack_exynos5.c ion.c
-LOCAL_MODULE := memtrack.exynos5
+LOCAL_MODULE := memtrack.$(TARGET_BOARD_PLATFORM)
 
 ifneq ($(TARGET_SOC),exynos5410)
 LOCAL_CFLAGS += -DTRACK_MALI_MEMORY

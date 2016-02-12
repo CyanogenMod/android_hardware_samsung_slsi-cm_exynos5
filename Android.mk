@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 
-ifeq ($(TARGET_BOARD_PLATFORM),exynos5)
+ifneq ($(filter exynos5 exynos7,$(TARGET_BOARD_PLATFORM)),)
 ifeq ($(TARGET_SLSI_VARIANT),cm)
 
 exynos5_dirs := \

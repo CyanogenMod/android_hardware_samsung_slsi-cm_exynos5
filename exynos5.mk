@@ -42,7 +42,7 @@ PRODUCT_PACKAGES += \
 
 # hw composer HAL
 PRODUCT_PACKAGES += \
-	hwcomposer.exynos5
+	hwcomposer.$(TARGET_BOARD_PLATFORM)
 
 # MobiCore
 PRODUCT_PACKAGES += \
@@ -50,4 +50,4 @@ PRODUCT_PACKAGES += \
 
 # Memory Tracker HAL
 PRODUCT_PACKAGES += \
-	memtrack.exynos5
+	memtrack.$(TARGET_BOARD_PLATFORM)
