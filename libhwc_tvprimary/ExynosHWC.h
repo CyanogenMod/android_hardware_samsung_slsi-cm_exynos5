@@ -296,7 +296,7 @@ struct exynos5_hwc_composer_device_1_t {
 
     exynos5_gsc_data_t      gsc[NUM_GSC_UNITS];
 
-    struct s3c_fb_win_config last_config[NUM_HW_WINDOWS];
+    struct decon_win_config last_config[NUM_HW_WINDOWS];
     size_t                  last_fb_window;
     const void              *last_handles[NUM_HW_WINDOWS];
     exynos5_gsc_map_t       last_gsc_map[NUM_HW_WINDOWS];

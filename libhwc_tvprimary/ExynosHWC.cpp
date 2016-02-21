@@ -47,7 +47,7 @@ static void dump_layer(hwc_layer_1_t const *l)
         dump_handle(private_handle_t::dynamicCast(l->handle));
 }
 
-static void dump_config(s3c_fb_win_config &c)
+static void dump_config(decon_win_config &c)
 {
     ALOGV("\tstate = %u", c.state);
     if (c.state == c.S3C_FB_WIN_STATE_BUFFER) {
@@ -163,6 +163,29 @@ static inline bool mxr_src_cfg_changed(exynos_gsc_img &c1, exynos_gsc_img &c2)
             c1.fw != c2.fw ||
             c1.fh != c2.fh;
 }
+
+static enum decon_pixel_format exynos5_format_to_decon_format(int format)
+{
+    switch (format) {
+        case HAL_PIXEL_FORMAT_RGBA_8888:
+            return S3C_FB_PIXEL_FORMAT_RGBA_8888;
+        case HAL_PIXEL_FORMAT_RGBX_8888:
+            return S3C_FB_PIXEL_FORMAT_RGBX_8888;
+        case HAL_PIXEL_FORMAT_RGBA_5551:
+            return S3C_FB_PIXEL_FORMAT_RGBA_5551;
+        case HAL_PIXEL_FORMAT_RGB_565:
+            return S3C_FB_PIXEL_FORMAT_RGB_565;
+        case HAL_PIXEL_FORMAT_BGRA_8888:
+            return S3C_FB_PIXEL_FORMAT_BGRA_8888;
+#ifdef EXYNOS_SUPPORT_BGRX_8888
+        case HAL_PIXEL_FORMAT_BGRX_8888:
+            return S3C_FB_PIXEL_FORMAT_BGRX_8888;
+#endif
+        default:
+            return S3C_FB_PIXEL_FORMAT_MAX;
+    }
+}
+
 static enum s3c_fb_pixel_format exynos5_format_to_s3c_format(int format)
 {
     switch (format) {
@@ -187,7 +210,11 @@ static enum s3c_fb_pixel_format exynos5_format_to_s3c_format(int format)
 
 static bool exynos5_format_is_supported(int format)
 {
+#ifdef DECON_EXYNOS7580
+    return exynos5_format_to_decon_format(format) < DECON_PIXEL_FORMAT_MAX;
+#else
     return exynos5_format_to_s3c_format(format) < S3C_FB_PIXEL_FORMAT_MAX;
+#endif
 }
 
 static bool exynos5_format_is_rgb(int format)
@@ -567,6 +594,21 @@ int hdmi_get_config(struct exynos5_hwc_composer_device_1_t *dev)
     return hdmi_is_preset_supported(dev, preset.preset) ? 0 : -1;
 }
 
+static enum s3c_fb_blending exynos5_blending_to_decon_blending(int32_t blending)
+{
+    switch (blending) {
+        case HWC_BLENDING_NONE:
+            return DECON_BLENDING_NONE;
+        case HWC_BLENDING_PREMULT:
+            return DECON_BLENDING_PREMULT;
+        case HWC_BLENDING_COVERAGE:
+            return DECON_BLENDING_COVERAGE;
+            
+        default:
+            return S3C_FB_BLENDING_MAX;
+    }
+}
+
 static enum s3c_fb_blending exynos5_blending_to_s3c_blending(int32_t blending)
 {
     switch (blending) {
@@ -584,7 +626,11 @@ static enum s3c_fb_blending exynos5_blending_to_s3c_blending(int32_t blending)
 
 static bool exynos5_blending_is_supported(int32_t blending)
 {
+#ifdef DECON_EXYNOS7580
+    return exynos5_blending_to_decon_blending(blending) < DECON_BLENDING_MAX;
+#else
     return exynos5_blending_to_s3c_blending(blending) < S3C_FB_BLENDING_MAX;
+#endif
 }
 
 #if defined(USES_WFD) || defined(USE_G2D_SCALE_DOWN_FOR_LOW_RESOLUTION_HDMI)
@@ -2736,7 +2782,7 @@ static void exynos5_cleanup_gsc_m2m(exynos5_hwc_composer_device_1_t *pdev,
 
 static void exynos5_config_handle(private_handle_t *handle,
         hwc_rect_t &sourceCrop, hwc_rect_t &displayFrame,
-        int32_t blending, int fence_fd, s3c_fb_win_config &cfg,
+        int32_t blending, int fence_fd, decon_win_config &cfg,
         exynos5_hwc_composer_device_1_t *pdev)
 {
     uint32_t x, y;
@@ -2799,20 +2845,33 @@ static void exynos5_config_handle(private_handle_t *handle,
     }
 #endif
 
+#ifdef DECON_EXYNOS7580
+    cfg[0].state = cfg.S3C_FB_WIN_STATE_BUFFER;
+    cfg[0].fd_idma[0] = handle->fd;
+    cfg[0].fd_idma[1] = -1; //FIXME
+    cfg[0].fd_idma[2] = -1; //FIXME
+    cfg[0].idma_type = IDMA_G0; //FIXME
+    cfg[0].plane_alpha = 255;
+    cfg[0].src = {x, y, w, h, w, h};
+    cfg[0].dst = {x, y, w, h, w, h};
+    cfg[0].format = exynos5_format_to_decon_format(handle->format);
+    cfg[0].blending = exynos5_blending_to_decon_blending(blending);
+#else
     cfg.state = cfg.S3C_FB_WIN_STATE_BUFFER;
     cfg.fd = handle->fd;
     cfg.x = x;
     cfg.y = y;
     cfg.w = w;
     cfg.h = h;
-    cfg.format = exynos5_format_to_s3c_format(handle->format);
     cfg.offset = offset;
+    cfg.format = exynos5_format_to_s3c_format(handle->format);
     cfg.stride = handle->stride * bpp / 8;
     cfg.blending = exynos5_blending_to_s3c_blending(blending);
+#endif
     cfg.fence_fd = fence_fd;
 }
 
-static void exynos5_config_overlay(hwc_layer_1_t *layer, s3c_fb_win_config &cfg,
+static void exynos5_config_overlay(hwc_layer_1_t *layer, decon_win_config &cfg,
         exynos5_hwc_composer_device_1_t *pdev)
 {
     if (layer->compositionType == HWC_BACKGROUND) {
@@ -2842,8 +2901,8 @@ static int exynos5_post_fimd(exynos5_hwc_composer_device_1_t *pdev,
         hwc_display_contents_1_t* contents)
 {
     exynos5_hwc_post_data_t *pdata = &pdev->bufs;
-    struct s3c_fb_win_config_data win_data;
-    struct s3c_fb_win_config *config = win_data.config;
+    struct decon_win_config_data win_data;
+    struct decon_win_config *config = win_data.config;
 
     memset(config, 0, sizeof(win_data.config));
     for (size_t i = 0; i < NUM_HW_WINDOWS; i++)
@@ -2945,7 +3004,7 @@ static int exynos5_post_fimd(exynos5_hwc_composer_device_1_t *pdev,
 #ifdef SKIP_STATIC_LAYER_COMP
     if (pdev->virtual_ovly_flag) {
         memcpy(&win_data.config[pdev->last_ovly_win_idx + 1],
-            &pdev->last_config[pdev->last_ovly_win_idx + 1], sizeof(struct s3c_fb_win_config));
+            &pdev->last_config[pdev->last_ovly_win_idx + 1], sizeof(struct decon_win_config));
         win_data.config[pdev->last_ovly_win_idx + 1].fence_fd = -1;
         for (size_t i = pdev->last_ovly_lay_idx + 1; i < contents->numHwLayers; i++) {
             hwc_layer_1_t &layer = contents->hwLayers[i];
@@ -2980,7 +3039,7 @@ static int exynos5_post_fimd(exynos5_hwc_composer_device_1_t *pdev,
 
 static int exynos5_clear_fimd(exynos5_hwc_composer_device_1_t *pdev)
 {
-    struct s3c_fb_win_config_data win_data;
+    struct decon_win_config_data win_data;
     memset(&win_data, 0, sizeof(win_data));
 
     int ret = ioctl(pdev->fd, S3CFB_WIN_CONFIG, &win_data);
