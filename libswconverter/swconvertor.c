@@ -462,7 +462,7 @@ void Tile2D_To_YUV420(unsigned char *Y_plane, unsigned char *Cb_plane, unsigned 
             for (k = 0; (k < 16) && ((y + k) < height); k++) {
                 actual_width = out_of_width ? ((width%4)?((width%16) / 4 + 1) : ((width%16) / 4)) : 4;
                 for (l = 0; l < actual_width; l++) {
-                    data = *((unsigned int*)(base_addr + 16*k + l*4));
+                    data = *((unsigned int*)(uintptr_t)(base_addr + 16*k + l*4));
                     for (j = 0; (j < 4) && (x + l*4 + j) < width; j++) {
                         Y_plane[(y+k)*width + x + l*4 +j] = (data>>(8*j))&0xff;
                     }
@@ -478,7 +478,7 @@ void Tile2D_To_YUV420(unsigned char *Y_plane, unsigned char *Cb_plane, unsigned 
             for (k = 0; (k < 8) && ((y+k) < height/2); k++) {
                 actual_width = out_of_width ? ((width%4) ? ((width%16) / 4 + 1) : ((width%16) / 4)) : 4;
                 for (l = 0; l < actual_width; l++) {
-                    data = *((unsigned int*)(base_addr + 16*k + l*4));
+                    data = *((unsigned int*)(uintptr_t)(base_addr + 16*k + l*4));
                     for (j = 0; (j < 2) && (x/2 + l*2 +j) < width/2; j++) {
                         Cb_plane[(y+k)*width/2 + x/2 + l*2 +j] = (data>> (8*2*j))&0xff;
                         Cr_plane[(y+k)*width/2 + x/2 + l*2 +j] = (data>>(8*2*j+8))&0xff;
