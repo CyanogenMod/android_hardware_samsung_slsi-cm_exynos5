@@ -47,9 +47,20 @@ char* gsc_open_node(int dev_num) {
         break;
     }
 
+    ALOGV("%s: trying to open gsc node at %s",
+          __func__, devname);
+
     fd = exynos_v4l2_open_devname(devname, O_RDWR);
     if (fd < 0) {
+        ALOGE("%s: failed to open gsc node at %s, trying to append \".output\"",
+              __func__, devname);
         strncat(devname, output, sizeof(devname));
+    }
+
+    fd = exynos_v4l2_open_devname(devname, O_RDWR);
+    if (fd < 0) {
+        ALOGE("%s: failed to open gsc node at %s, no solutions left!",
+              __func__, devname);
     }
 
     return devname;
