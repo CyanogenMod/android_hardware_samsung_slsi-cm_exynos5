@@ -54,12 +54,7 @@ extern "C" {
 #define FIMD_SUBDEV_PAD_SINK     (0)
 #define MAX_BUFFERS                 (6)
 
-#ifdef USES_DT
-#define NUM_OF_GSC_HW               (3)
-#else
 #define NUM_OF_GSC_HW               (4)
-#endif
-
 #define NODE_NUM_GSC_0              (23)
 #define NODE_NUM_GSC_1              (26)
 #define NODE_NUM_GSC_2              (29)
