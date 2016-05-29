@@ -26,9 +26,14 @@ PRODUCT_PACKAGES := \
 # codecs (audio)
 PRODUCT_PACKAGES += \
 	libOMX.Exynos.AAC.Decoder \
-	libOMX.Exynos.FLAC.Decoder \
 	libOMX.Exynos.MP3.Decoder \
 	libOMX.Exynos.WMA.Encoder
+
+# Remove FLAC hw decoder because the needed
+# frameworks patch cannot be merged because
+# of licensing issues
+#PRODUCT_PACKAGES += \
+#	libOMX.Exynos.FLAC.Decoder
 
 ifeq ($(BOARD_USE_SEIREN_AUDIO), true)
 PRODUCT_PACKAGES += \
