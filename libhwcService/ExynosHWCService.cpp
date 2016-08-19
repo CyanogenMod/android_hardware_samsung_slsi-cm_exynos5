@@ -422,7 +422,7 @@ ExynosHWCService *ExynosHWCService::getExynosHWCService()
 
 void ExynosHWCService::setExynosHWCCtx(ExynosHWCCtx *HWCCtx)
 {
-    ALOGD_IF(HWC_SERVICE_DEBUG, "HWCCtx=0x%p", (int)HWCCtx);
+    ALOGD_IF(HWC_SERVICE_DEBUG, "HWCCtx=0x%p", HWCCtx);
     if(HWCCtx) {
         mHWCCtx = HWCCtx;
     }
